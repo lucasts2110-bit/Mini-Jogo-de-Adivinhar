@@ -1,0 +1,77 @@
+function iniciarJogo() {
+            // Variáveis para armazenar o número secreto e tentativas
+            const numeroSecreto = Math.floor(Math.random() * 100) + 1;
+            let tentativasRestantes = 10;
+            
+            // Array para salvar o histórico de tentativas
+            const historicoPalpites = [];
+            
+            console.log("=== JOGO DE ADIVINHAÇÃO ===");
+            console.log("Número secreto gerado! Tente adivinhar um número entre 1 e 100.");
+            console.log("Você tem " + tentativasRestantes + " tentativas.");
+            
+            // Estrutura de repetição para permitir várias tentativas
+            for (let tentativa = 1; tentativa <= 10; tentativa++) {
+                const palpite = prompt(
+                    "Tentativa " + tentativa + " de 10\n" +
+                    "Digite um número entre 1 e 100:"
+                );
+                
+                // Verificar se o usuário cancelou
+                if (palpite === null) {
+                    console.log("Jogo cancelado pelo usuário.");
+                    console.log("O número secreto era: " + numeroSecreto);
+                    break;
+                }
+                
+                const numeroPalpite = Number(palpite);
+                
+                // Validar a entrada
+                if (isNaN(numeroPalpite) || numeroPalpite < 1 || numeroPalpite > 100) {
+                    alert("Por favor, digite um número válido entre 1 e 100.");
+                    tentativa--; // Não conta essa tentativa inválida
+                    continue;
+                }
+                
+                // Adicionar ao histórico
+                historicoPalpites.push(numeroPalpite);
+                console.log("Palpite " + tentativa + ": " + numeroPalpite);
+                
+                // Condicionais para verificar se o chute foi maior/menor
+                if (numeroPalpite === numeroSecreto) {
+                    console.log(" PARABÉNS! Você acertou o número " + numeroSecreto + " na tentativa " + tentativa + "!");
+                    console.log("Histórico de palpites: " + historicoPalpites.join(", "));
+                    alert(" PARABÉNS! Você acertou o número " + numeroSecreto + "!");
+                    break;
+                } else if (numeroPalpite < numeroSecreto) {
+                    alert("O número secreto é MAIOR que " + numeroPalpite);
+                    console.log("Dica: O número secreto é maior que " + numeroPalpite);
+                } else {
+                    alert("O número secreto é MENOR que " + numeroPalpite);
+                    console.log("Dica: O número secreto é menor que " + numeroPalpite);
+                }
+                
+                tentativasRestantes--;
+                
+                // Verificar se acabaram as tentativas
+                if (tentativasRestantes === 0) {
+                    console.log(" FIM DE JOGO! Você não conseguiu adivinhar o número.");
+                    console.log("O número secreto era: " + numeroSecreto);
+                    console.log("Histórico de palpites: " + historicoPalpites.join(", "));
+                    alert(" Fim de jogo! O número secreto era: " + numeroSecreto);
+                }
+            }
+            
+            // Perguntar se quer jogar novamente
+            const jogarNovamente = confirm("Deseja jogar novamente?");
+            if (jogarNovamente) {
+                iniciarJogo();
+            } else {
+                console.log("=== JOGO FINALIZADO ===");
+            }
+        }
+        
+        window.onload = function() {
+            alert("Bem-vindo ao Jogo de Adivinhação!\nTente adivinhar um número entre 1 e 100.\nVocê tem 10 tentativas.");
+            iniciarJogo();
+        };
